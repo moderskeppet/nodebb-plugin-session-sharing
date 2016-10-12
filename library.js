@@ -124,9 +124,12 @@ plugin.process = function(token, callback) {
 plugin.verifyToken = function(payload, callback) {
 	var parent = plugin.settings['payload:parent'],
 		id = parent ? payload[parent][plugin.settings['payload:id']] : payload[plugin.settings['payload:id']],
-		username = parent ? payload[parent][plugin.settings['payload:username']] : payload[plugin.settings['payload:username']],
+		//username = parent ? payload[parent][plugin.settings['payload:username']] : payload[plugin.settings['payload:username']],
 		firstName = parent ? payload[parent][plugin.settings['payload:firstName']] : payload[plugin.settings['payload:firstName']],
 		lastName = parent ? payload[parent][plugin.settings['payload:lastName']] : payload[plugin.settings['payload:lastName']];
+
+		//min override - använd förnamn + efternamn som username
+		var username = [firstName, lastName].join(' ').trim(); //utils.slugify(email);
 
 	if (!id || (!username && !firstName && !lastName)) {
 		return callback(new Error('payload-invalid'));
